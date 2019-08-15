@@ -1,0 +1,161 @@
+#include<stdio.h>
+#include<graphics.h>
+#include<dos.h>
+#include<conio.h>
+#include<stdlib.h>
+
+//incluir -lwinmm no code blocks
+    struct no
+    {
+        int dado ;
+        struct no *prox;
+    };
+
+    typedef struct
+    {
+        struct no *topo;
+    } pilha;
+
+    void cria (pilha *s);
+    int colocar(pilha *s, int x );
+    void  mostraPilha(pilha s);
+
+
+    int main()
+    {
+    pilha p;
+    int v;
+    char c;
+    int placar=0,erro=0;
+    int x=400,y=200,i=0,ya=275,yb=125;
+    int ch=ya,ch1=yb;
+    int x1=x+320;
+    int tempo=1000,velocidade=10;
+
+    getchar();
+    initwindow(640,480);
+    setbkcolor(3);
+
+
+    int auxt=0;
+    char a[5];
+
+    PlaySound("musica.wav",NULL, SND_ASYNC | SND_LOOP);
+
+    while(i<1000){
+        swapbuffers();
+        sprintf(a, "tempo: %d", auxt);
+        outtextxy(4, 4, a);
+        readimagefile("fundo.jpg",0,0,640,480);
+        auxt++;
+            if(erro==3){
+                setactivepage(1);
+
+                readimagefile("gameover.gif",0,0,640,480);
+                printf("/n Seu placar foi de %d de um total de %d.",placar,placar+erro);
+                system("pause");
+                printf("\nDados na pilha...\n\n");
+                mostraPilha(p);}
+            x=x-velocidade+2;
+        if(x<0){
+            x=640;
+        if(rand()%2==0)
+            ch=ya;
+        else
+            ch=yb;
+
+                }
+
+    if(x==40){
+            if((ch>y-70)&&(ch<y+20)){
+            erro++;
+            v = erro;
+            colocar(&p , v);
+
+        }else
+            placar++;
+
+            }
+
+    if(kbhit()!=0)
+        {
+        c=getch();
+    if(c=='P')
+        y=(y+20)%640;
+    if(c=='H')
+        {
+        y=y-20;
+        if(y<0) y=640;
+        }
+    }
+
+    readimagefile("dragao.gif",0,y,159,y+114);
+
+
+    readimagefile("navio.gif",x,ch,(x+50),(ch+50));
+
+    x1=x1-velocidade+2;
+    if(x1<0){
+        x1=640;
+            if(rand()%2==0)
+                ch1=ya;
+            else
+                ch1=yb;
+                }
+
+    readimagefile("navio.gif",x1,ch1,(x1+50),(ch1+50));
+
+    if(x1==40){
+        if((ch1>y-70)&&(ch1<y+20)){
+            placar++;
+            v = placar;
+            colocar(&p , v);
+
+        }else
+            erro++;
+        }
+
+
+
+    }
+        return 0;
+
+    }
+
+void cria (pilha *s)
+{
+    s->topo=NULL;
+}
+
+int colocar(pilha *s, int x)
+{
+    struct no *aux;
+    aux=(struct no *)malloc(sizeof(struct no));
+    if (aux==NULL)
+        return 0;
+    aux->dado=x;
+    aux->prox= s->topo;
+    s->topo=aux;
+    return 1;
+}
+
+
+void mostraPilha(pilha s)
+{
+    struct no *aux;
+
+    aux = s.topo;
+    if (aux == NULL)
+    {
+        printf("\nNenhum ponto...\n");
+    }
+    else
+    {
+        do
+        {
+            printf("%d\n", aux->dado);
+            aux = aux->prox;
+        } while (aux != NULL);
+    }
+
+}
